@@ -44,7 +44,8 @@ to create and run a C++ file, run:
 # Special cases 
 
 1. Some things like classes/structs need ```};``` at the end. So in CAS put ; at the end of their line, for example:
-```    class my_class;
+```
+    class my_class;
         int stuff_in_my_class
 ```
 
@@ -56,7 +57,8 @@ to create and run a C++ file, run:
     Currently working on a way to fix this. The best alternative right now is ```/* comment */```
 
 3. If you really want to split up a line, you can. Just put a \ at the end of the line. Example:
-```    cout << "hello world\n" + \
+```
+        cout << "hello world\n" + \
             "this is a really long line" + \
             "so I used a \\ to fit it on multiple lines"
 ```
