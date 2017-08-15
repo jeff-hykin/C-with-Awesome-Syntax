@@ -49,7 +49,7 @@ python CAS.py run hello_world.cas
     
 # Special cases 
 
-1. Some things like classes/structs need ```};``` at the end. So in CAS put ; at the end of their line, for example:
+1. Some things like classes/structs need ```};``` at the end. So in CAS put ; at the end of that line, for example:
 ```
     class my_class;
         int stuff_in_my_class
