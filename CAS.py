@@ -1,12 +1,11 @@
 # Current state:
-    # FIXME, accidently adding ; to the end of comments instead of the end of the line
+    # FIXME, (difficult) accidently adding ; to the end of comments instead of the end of the line
     # TODO, add a way to compile all .cas files in a folder
     # TODO, add a block comment feature
-    # TODO, warn about #defines messing with things
     # TODO, clean up the Scope properties 
     # TODO, change how Line.attributes works (make it a list of string and dicts rather than a dict)
     # TODO, implement the pre-pre-processor commands 
-    # TODO, add enum and similar less-common stuff 
+    # TODO, add enum and similar less-common stuff to the identifier 
 
 import regex as re
 import sys
@@ -23,7 +22,7 @@ if True:
             # this allows attributes to be given to a line
             # and allows string-lines to be secretly added
             # both before and after the line-object
-            # this is useful for parsing
+            # which is useful for parsing
         
         def __init__(self, string_):
             # find the indentation of a line, keep it seperate from the content
@@ -35,6 +34,8 @@ if True:
             self.content = re.sub(r'^[ \t]+','',string_)
             # remove trailing whitespace
             self.content = re.sub(r'[ \t]+$','',self.content)
+            
+            # TODO, add an original_line_number attribute
             
             # make some other properties that will be used later
             self.lines_before = []
@@ -154,7 +155,7 @@ if True:
     class Scope:
         # summary:
             # this is a one-off class (one global object)
-            # it will keep track of what scope the current 
+            # it will keep track of what scopes the current 
             # line is in
             # use this to: 
                 # know what scope is active
@@ -187,9 +188,10 @@ if True:
                     # dicts (in the list) will check each of its key-value pair agaisnt 
                     # the line's attribute's key-value pairs
                 # examples:
-                    # scope_name = "for" , rule_in_attributes = [ 'enum' ]
-                        # this means it will find the most recent for loop that is an enum
-                        # it will ignore scopes not named 'for' even if (for some reason) they had an 'enum' attribute
+                    # scope_name = "for" , rule_in_attributes = [ 'RangeBased' ]
+                        # this means it will find the most recent for loop that is range based
+                        # ranged based being: for( auto each : an_interable ) instead of: for (int i; i < thing; i++)
+                        # it will ignore scopes not named 'for' even if (for some reason) they had a 'RangeBased' attribute
                     # scope_name = None , rule_in_attributes = [ 'conditional' ]
                         # this means it will find the most recent conditional regardless of anything else
                     
@@ -347,9 +349,10 @@ if True:
                     # dicts (in the list) will check each of its key-value pair agaisnt 
                     # the line's attribute's key-value pairs
                 # examples:
-                    # scope_name = "for" , rule_in_attributes = [ 'enum' ]
-                        # this means it will find the most recent for loop that is an enum
-                        # it will ignore scopes not named 'for' even if (for some reason) they had an 'enum' attribute
+                    # scope_name = "for" , rule_in_attributes = [ 'RangeBased' ]
+                        # this means it will find the most recent for loop that is range based
+                        # ranged based being: for( auto each : an_interable ) instead of: for (int i; i < thing; i++)
+                        # it will ignore scopes not named 'for' even if (for some reason) they had a 'RangeBased' attribute
                     # scope_name = None , rule_in_attributes = [ 'conditional' ]
                         # this means it will find the most recent conditional regardless of anything else
                     
@@ -507,9 +510,10 @@ if True:
                     # dicts (in the list) will check each of its key-value pair agaisnt 
                     # the line's attribute's key-value pairs
                 # examples:
-                    # scope_name = "for" , rule_in_attributes = [ 'enum' ]
-                        # this means it will find the first (largest parent) for loop that is an enum
-                        # it will ignore scopes not named 'for' even if (for some reason) they had an 'enum' attribute
+                    # scope_name = "for" , rule_in_attributes = [ 'RangeBased' ]
+                        # this means it will find the first (largest parent) for loop that is range based
+                        # ranged based being: for( auto each : an_interable ) instead of: for (int i; i < thing; i++)
+                        # it will ignore scopes not named 'for' even if (for some reason) they had a 'RangeBased' attribute
                     # scope_name = None , rule_in_attributes = [ 'conditional' ]
                         # this means it will find the first (largest parent) conditional regardless of anything else
                     
@@ -661,9 +665,10 @@ if True:
                     # dicts (in the list) will check each of its key-value pair agaisnt 
                     # the line's attribute's key-value pairs
                 # examples:
-                    # scope_name = "for" , rule_in_attributes = [ 'enum' ]
-                        # this means it will find the first (largest parent) for loop that is an enum
-                        # it will ignore scopes not named 'for' even if (for some reason) they had an 'enum' attribute
+                    # scope_name = "for" , rule_in_attributes = [ 'RangeBased' ]
+                        # this means it will find the first (largest parent) for loop that is range based
+                        # ranged based being: for( auto each : an_interable ) instead of: for (int i; i < thing; i++)
+                        # it will ignore scopes not named 'for' even if (for some reason) they had a 'RangeBased' attribute
                     # scope_name = None , rule_in_attributes = [ 'conditional' ]
                         # this means it will find the first (largest parent) conditional regardless of anything else
                     
@@ -769,7 +774,7 @@ if True:
                             # this is here because of nested for loops 
                             # if skip_line is True, then it means 
                             # a nested for loop wanted to continue on 'for each_line'
-                            # (when depth = 0, then 'continue' is used instead of 'break')
+                            # (when nested_depth = 0, then 'continue' is used instead of 'break')
                             # nested_depth = 1
                             break
                             
@@ -824,6 +829,9 @@ if True:
         # however in the future there will probably be custom commands
     
     def SemicolonChecker(TheLine,TheNextNonWhitespaceLine):
+        # summary:
+            # this is the function that handles adding all of the ; as delimiters 
+
         # lines starting with # dont put ;
         if TheLine.startsWith('#'):
             return    
@@ -842,18 +850,22 @@ if True:
         # else put a semicolon at the end of it!
         else:
             TheLine.content += ';'
-    def BracketsAdder(TheLine, TheNextNonWhitespaceLine):
 
+    def BracketsAdder(TheLine, TheNextNonWhitespaceLine):
+        # summary:
+            # this is the function that handles adding all the {}'s
+            # to each place they need to go
+        
         # skip only-whitespace/comment lines 
         if TheLine.isOnlyWhitespaceOrComment():
             return
 
-        # if there is no next-line, then close all the left-open brackets
+        # if there is no next-line, then close all the currently-left-open brackets
         if TheNextNonWhitespaceLine == None:
             add_to_end = ''
             for each in range(0,len(CURRENT_SCOPES.lines)):
                 # add a bracket / comment
-                add_to_end += '\n'+CURRENT_SCOPES.lastScope().indent+'}' #+' // end ' + CURRENT_SCOPES.lastScope().attributes['ScopeName']
+                add_to_end += '\n' + CURRENT_SCOPES.lastScope().indent + CURRENT_SCOPES.lastScope().attributes['PutAfterBlockEnd'] 
                 # remove them from the scope
                 CURRENT_SCOPES.removeScope()
             lines_[-2].addRawLinesAfter(add_to_end)
@@ -894,7 +906,7 @@ if True:
                         # FIXME, classes and structs need ;'s after their }
                         # add a bracket and/or comment
                         if 'PutAfterBlockEnd' in CURRENT_SCOPES.lastScope().attributes:
-                            add_to_end += '\n' + CURRENT_SCOPES.lastScope().indent + CURRENT_SCOPES.lastScope().attributes['PutAfterBlockEnd'] #+' // end ' + CURRENT_SCOPES.lastScope().attributes['ScopeName']
+                            add_to_end += '\n' + CURRENT_SCOPES.lastScope().indent + CURRENT_SCOPES.lastScope().attributes['PutAfterBlockEnd'] 
                         # remove them from the scope
                         CURRENT_SCOPES.removeScope()
                     
@@ -919,12 +931,9 @@ if True:
                     #if len(CURRENT_SCOPES.lines) > each_index:
                         # check to make sure its bigger than the next scope
                     # FIXME, improve this error/warning message 
-                    print "Hey, there's a line thats not indented correctly\nits: " + TheNextNonWhitespaceLine.content
+                    print "Hey, there's a line and I don't think it is indented correctly\nits: " + TheNextNonWhitespaceLine.content
                     exit(1)
                     
-                    
-
-                
                 # the code should never get here since 
                 # this_indent should either be >, <, or == scope_indent
                 else:
@@ -1055,19 +1064,25 @@ if True:
 
 # FIXME, pre-pre-processor future-features
     # before_parse_commands = []
-    # XDP_CPP_phrases   = ['//:', '//:Before', '//:After', '//:BeforeParse']
-    # before_commands   = []
-    # after_commands    = []
+    # CAS_phrases     = ['//:', '//:Before', '//:After', '//:BeforeParse']
+    # before_commands = []
+    # after_commands  = []
 
 
 # Phase 0 
-# get the argument file, turn it into a string
 if True:
+    # summary:
+        # get the arguments from when this function is called
+        # get the filename from the arguments
+        # figure out if the user wants to print/compile/run the .cas file
+        # by default the g++ command is used to compile C++
+    
+    # get the first argument 
     arg1 = str(sys.argv[1])
     
     print_output_file = False 
-    compile_code = False
-    run_code = False
+    compile_code      = False
+    run_code          = False
     name_of_output_file = 'a.cpp'
     make_output_code_file = True
     
