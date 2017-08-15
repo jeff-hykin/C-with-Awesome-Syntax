@@ -50,9 +50,13 @@ to create and run a C++ file, run:
 ```
 
 2. Code + //Comment on the same line = problems. For example:
-        ```int a = 5 + 2 // im a comment ```
+```
+        int a = 5 + 2 // im a comment
+```
     that^ would end up in C++ as:
-        ```int a = 5 + 2 // im a comment;```
+```
+        int a = 5 + 2 // im a comment;
+```
     which won't run. 
     Currently working on a way to fix this. The best alternative right now is ```/* comment */```
 
