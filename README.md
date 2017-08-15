@@ -46,7 +46,7 @@ to create and run a C++ file, run:
 1. Some things like classes/structs need ```};``` at the end. So in CAS put ; at the end of their line, for example:
 ```    class my_class;
         int stuff_in_my_class
-        ```
+```
 
 2. Code + //Comment on the same line = problems. For example:
         ```int a = 5 + 2 // im a comment ```
