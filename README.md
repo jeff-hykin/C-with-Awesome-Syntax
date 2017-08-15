@@ -17,7 +17,7 @@ CAS file named hello_world.cas:
         return 0
 ```
 The equivlent C++ code:
-```
+```C++
     #include <iostream>
     using namespace std;
     int main() {
@@ -68,7 +68,7 @@ Currently working on a way to fix this. The best alternative right now is /* com
 
 
 3. If you really want to split up a line, you can. Just put a \ at the end of the line. Example:
-```
+```C++
         cout << "hello world\n" + \
             "this is a really long line" + \
             "so I used a \\ to fit it on multiple lines"
