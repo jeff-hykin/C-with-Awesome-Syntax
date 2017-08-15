@@ -63,8 +63,9 @@ python CAS.py run hello_world.cas
 ```
         int a = 5 + 2 // im a comment;
 ```
-    which won't run. 
-    Currently working on a way to fix this. The best alternative right now is ```/* comment */```
+Which won't run. 
+Currently working on a way to fix this. The best alternative right now is /* comment */
+
 
 3. If you really want to split up a line, you can. Just put a \ at the end of the line. Example:
 ```
