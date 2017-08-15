@@ -1,4 +1,4 @@
-# C-with-Awesome-Syntax
+# C-with-Awesome-Syntax (CAS)
 CAS converts to C++ in the same way SASS converts to CSS 
 
 Indentation is used for scoping rather than {}'s
