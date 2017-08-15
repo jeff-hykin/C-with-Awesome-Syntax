@@ -9,19 +9,22 @@ No more ;'s as delimiters
 # Example 
 
 CAS file named hello_world.cas:
+```
     #include <iostream>
     using namespace std
     int main()
         cout << "Hello World\n"
         return 0
-
+```
 The equivlent C++ code:
+```
     #include <iostream>
     using namespace std;
     int main() {
         cout << "Hello World\n;
         return 0;
     }
+```
 
 # How to use 
 If you have a file hello_world.cas
