@@ -74,3 +74,6 @@ Currently working on a way to fix this. The best alternative right now is /* com
             "so I used a \\ to fit it on multiple lines"
 ```
 
+# Future features
+1. Would like to automatically handle Special Case 1 
+2. Like SASS, I would like to turn this into an actual installable command and add it to homebrew.
