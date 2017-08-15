@@ -30,13 +30,19 @@ The equivlent C++ code:
 If you have a file hello_world.cas
 
 to print the C++ code, run:
-    python CAS.py print hello_world.cas
+```
+python CAS.py print hello_world.cas
+```
 
 to create a C++ file, run:
-    python CAS.py compile hello_world.cas hello_world.cpp
+```
+python CAS.py compile hello_world.cas hello_world.cpp
+```
 
 to create and run a C++ file, run:
-    python CAS.py run hello_world.cas
+```
+python CAS.py run hello_world.cas
+```
     
     
     
