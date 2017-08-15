@@ -1077,34 +1077,42 @@ if True:
         # figure out if the user wants to print/compile/run the .cas file
         # by default the g++ command is used to compile C++
     
+    # TODO, allow commands other than just g++ to be used 
+    
     # get the first argument 
     arg1 = str(sys.argv[1])
     
     print_output_file = False 
     compile_code      = False
     run_code          = False
-    name_of_output_file = 'a.cpp'
     make_output_code_file = True
-    
+    name_of_output_file = 'a.cpp' #the default name is a.cpp
+        
     if arg1 == 'run':
-        run_code = True
+        run_code     = True
         compile_code = True
         make_output_code_file = True
         filename = str(sys.argv[2])
+        
     elif arg1 == 'compile':
-        compile_code = True
+        compile_code          = True
         make_output_code_file = True
         filename = str(sys.argv[2])
+        
     elif arg1 == 'print':
-        print_output_file = True
+        print_output_file     = True
         make_output_code_file = False
         filename = str(sys.argv[2])
+        
     else:
         filename = str(sys.argv[1])
     
+    # if another argument is there
+    # then assume thats the name of the output file
     if len(sys.argv) == 4:
         name_of_output_file = str(sys.argv[3])
         
+    # get the .cas file 
     the_file       = open(filename,'r+')
     lines_         = the_file.read()
     the_file.close()
@@ -1125,11 +1133,11 @@ if True:
             # Ex:
                 # string a_string = "hello " + \
                 #                            "world"
-                #^ that would be 1 line object, even though its two lines
+                #^ that would be 1 line object, even though its two string-lines
     # convert string to list of string-lines 
     lines_ = lines_.splitlines()
     line_index = -1
-    # break once all lines have been checked
+    # end once all lines have been checked
     while line_index + 1 < len(lines_):
         # iterate 
         line_index += 1
@@ -1182,13 +1190,13 @@ if True:
 # Phase 3, start processing
 if True:
     # summary:
-        # this runs all of the functions 
-        # that are going to be manipulating the code
-        # in order to transform it into C++ code
+        # this runs all of the cas code-editing functions 
         #
-        # the functions are run in a particular order 
         # all functions are run for each line
-        
+        # for each line the functions are executed in the same particular order 
+
+    
+    lines_.append(None)
     # Why None is added to lines_:
         # because the editing-functions will use/need a 'TheNextLine' var
         # there is a None element at the end to show that there is no next line 
@@ -1198,7 +1206,7 @@ if True:
             # last line
             # having a testable None seems like a good way 
             # to inform the function that TheNextLine doesn't exist
-    lines_.append(None)
+
     each_line_index = -1
     end_processing_loop = False 
     while True:
@@ -1231,7 +1239,7 @@ if True:
 
         
 
-        # FIXME, all part of the pre-pre-processor feature 
+        # FIXME, below commented-out is all part of the pre-pre-processor features
             ##run 'BeforeParse' commands
             #for each_func in before_parse_commands:
             #    each_func(lines_[each_line_index],lines_[next_non_whitespace_line_index])
@@ -1262,7 +1270,7 @@ if True:
 
 
 # FIXME, part of the pre-pre-processor feature
-    ##replace ## stuff
+    ##replace '##' tags
     #for each in all_tag_names:
     #    exec(r'everything = re.sub(r"(^|\n)##'+each+'",'+each+'.output(), everything)')
 
@@ -1271,8 +1279,8 @@ if True:
 # Phase 4, output 
 if True:
     # summary:
-        # this prints, compiles, and runs the code
-        # depending on what commands were given
+        # this prints, compiles, and runs the code accordingly
+        # depending on what commands were given in Phase 0
     
     if print_output_file:
         print final_code_product
@@ -1289,11 +1297,13 @@ if True:
         # warning check 
         if name_of_output_file[-3:len(name_of_output_file)] != 'cpp':
             print "Hey the name of your output file doesn't include .cpp at the end"
+            exit(1)
             # TODO, add a question here that lets the user add the .cpp without re-running the command
-        # FIXME, name_of_output_file will have problems with stuff that needs to be escaped
+        
         
         # remove the file extension (which is almost allways .cpp)
         name_without_extention = re.sub(r'\.\w+$','',name_of_output_file)
+        # FIXME, name_of_output_file will have problems with stuff that needs to be escaped
         os.system('g++ "'+name_of_output_file+'" -o "'+name_without_extention+'.out"')
 
     if run_code:
