@@ -1,8 +1,8 @@
 # C-with-Awesome-Syntax (CAS)
 CAS converts to C++ in the same way SASS converts to CSS 
 
-Indentation is used for scoping rather than {}'s
-No more ;'s as delimiters
+1. Indentation is used for scoping rather than {}'s
+2. No more ;'s as delimiters
 
 
 
