@@ -75,7 +75,7 @@ Currently working on a way to fix this. The best alternative right now is /* com
 ```
 
 # Future features
-1. Would like to automatically handle Special Case 1 
+1. Would like to automatically handle Special Case 1.
 2. Like SASS, I would like to turn this into an actual installable command and add it to homebrew.
-3. Would like to create a syntax highlighting for Sublime Text and Atom for CAS
-4. Would like to add more powerful preprocessor commands such as headers being automatically included
+3. Would like to create a syntax highlighting package for Sublime Text and Atom.
+4. Would like to add more powerful preprocessor commands such as headers being automatically included.
