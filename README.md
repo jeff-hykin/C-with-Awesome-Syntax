@@ -17,7 +17,7 @@ CAS file named hello_world.cas:
         return 0
 ```
 The equivlent C++ code:
-```C++
+```
     #include <iostream>
     using namespace std;
     int main() {
