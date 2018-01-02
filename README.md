@@ -5,7 +5,6 @@ CAS converts to C++ in the same way SASS converts to CSS
 2. No more ;'s as delimiters
 
 
-
 # Example 
 
 CAS file named hello_world.cas:
@@ -27,7 +26,7 @@ The equivlent C++ code:
 ```
 
 # How to use 
-If you have a file hello_world.cas
+If you have a file hello_world.cas, and download the CAS.py file
 
 to print the C++ code, run:
 ```
@@ -75,6 +74,8 @@ Currently working on a way to fix this. The best alternative right now is /* com
 ```
 
 # Future features
+CAS will likely get a big update summer 2018.
+Desired features:<br>
 1. Would like to automatically handle Special Case 1.
 2. Like SASS, I would like to turn this into an actual installable command and add it to homebrew.
 3. Would like to create a syntax highlighting package for Sublime Text and Atom.
