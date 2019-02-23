@@ -73,10 +73,5 @@ Currently working on a way to fix this. The best alternative right now is /* com
             "so I used a \\ to fit it on multiple lines"
 ```
 
-# Future features
-CAS will likely get a big update summer 2018.
-Desired features:<br>
-1. Would like to automatically handle Special Case 1.
-2. Like SASS, I would like to turn this into an actual installable command and add it to homebrew.
-3. Would like to create a syntax highlighting package for Sublime Text and Atom.
-4. Would like to add more powerful preprocessor commands such as headers being automatically included.
+# Future Support
+This was more as a for-fun project. Maybe in a few years I'll make this work properly and release an extension for syntax highlighting for it.
